@@ -16,6 +16,7 @@ import com.system.MegaCityCabSystem.service.CloudinaryService;
 @RestController
 @CrossOrigin(origins = "*")
 
+
 public class CarController {
     
     @Autowired
@@ -24,23 +25,23 @@ public class CarController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
-    @GetMapping("/Car")
+    @GetMapping("/all/viewCars")
     public ResponseEntity<List<Car>> getAllCars() {
         return new ResponseEntity<>(carService.getAllCars(), HttpStatus.OK);
     }
 
-    @GetMapping("/car/{carId}")
+    @GetMapping("/all/getCar/{id}")
     public ResponseEntity<Car> getCarById(@PathVariable("id") String carId) {
         return new ResponseEntity<>(carService.getCarById(carId), HttpStatus.OK);
     }
 
-    @PostMapping("/cars/createCar")
+    @PostMapping("/auth/cars/createCar")
     public ResponseEntity<Car> createCar(@RequestParam String carBrand,
                                          @RequestParam String carModel,
                                          @RequestParam String carLicensePlate,
                                          @RequestParam int capacity,
                                          @RequestParam MultipartFile carImg) throws IOException {
-
+        
 
                 String carImgUrl = cloudinaryService.uploadImage(carImg);
 
@@ -50,20 +51,20 @@ public class CarController {
                 car.setCarLicensePlate(carLicensePlate);
                 car.setCapacity(capacity);
                 car.setCarImgUrl(carImgUrl);
-
+  
                 Car savedCar = carService.createCar(car);
                 return ResponseEntity.ok(savedCar);
     }
 
-
-    @PutMapping("/updateCar/{id}")
-    public ResponseEntity<Car> updateCar
-            (@PathVariable String carId, @RequestBody Car car) {
+    @PutMapping("/auth/cars/updateCar/{carId}")
+    public ResponseEntity<Car> updateCar(
+            @PathVariable String carId,
+            @RequestBody Car car) {
         Car updatedCar = carService.updateCar(carId, car);
         return new ResponseEntity<>(updatedCar, HttpStatus.OK);
     }
-    
-    @DeleteMapping("/deleteCar/{id}")
+
+    @DeleteMapping("/auth/cars/{carId}")
     public ResponseEntity<Void> deleteCar(@PathVariable String carId) {
         carService.deleteCar(carId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

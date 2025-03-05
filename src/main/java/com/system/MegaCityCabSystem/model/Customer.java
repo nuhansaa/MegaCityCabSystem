@@ -30,7 +30,7 @@ public class Customer {
 
     private String password;
 
-    private String role ="Customer";
+    private String role ="CUSTOMER";
 
     
     
