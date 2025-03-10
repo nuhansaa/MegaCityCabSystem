@@ -24,5 +24,5 @@ public class Admin {
 
     private String password;
 
-    private String role ="Admin";
+    private String role ="ADMIN";
 }
