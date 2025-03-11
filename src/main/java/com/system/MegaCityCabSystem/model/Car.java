@@ -35,4 +35,6 @@ public class Car {
     private double baseRate;
 
     private double driverRate;
+
+    private String categoryId;
 }
