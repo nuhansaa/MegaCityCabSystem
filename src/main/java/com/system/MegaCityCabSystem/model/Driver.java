@@ -11,28 +11,25 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Driver {
-
     @Id
     private String driverId;
 
     private String driverName;
 
+    private String email;
+
     private String driverVehicalLicense;
 
     private String driverPhone;
 
-    private String email;
-
     private String password;
 
-    private boolean available = true;
+    private boolean hasOwnCar;
 
-    private String role ="DRIVER";
+    private String carId; // Reference to the driver's car
 
-    private String carId;
+    private boolean available = true; // For availability status (used in /availability endpoint)
 
-    private boolean hasOwnCar = false;
-
+    private String role = "DRIVER";
 }

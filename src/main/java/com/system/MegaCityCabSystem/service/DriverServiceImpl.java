@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class DriverServiceImpl implements DriverService{
+public class DriverServiceImpl implements DriverService {
 
     @Autowired
     private DriverRepository driverRepository;
@@ -39,29 +39,24 @@ public class DriverServiceImpl implements DriverService{
     @Autowired
     private BookingRepository bookingRepository;
 
-
     public boolean isEmailTaken(String email) {
         return customerRepository.existsByEmail(email) || 
                driverRepository.existsByEmail(email);
     }
 
-
     @Override
     public List<Driver> getAllDrivers() {
-
         return driverRepository.findAll();
-        
     }
 
     @Override
     public Driver getDriverById(String driverId) {
-        
         return driverRepository.findById(driverId).orElse(null);
     }
 
     @Override
     public ResponseEntity<?> createDriver(Driver driver, Car car) {
-         if (isEmailTaken(driver.getEmail())) {
+        if (isEmailTaken(driver.getEmail())) {
             return ResponseEntity.badRequest()
                 .body("Email already exists: " + driver.getEmail());
         }
@@ -98,34 +93,6 @@ public class DriverServiceImpl implements DriverService{
 
     @Override
     @Transactional
-    public void deleteDriver(String driverId) {
-        log.info("Attempting to delete driver with ID: {}", driverId);
-
-        Driver driver = driverRepository.findById(driverId)
-                .orElseThrow(() -> new ResourceNotFoundException("Driver not found with id: " + driverId));
-
-        List<Booking> activeBookings = bookingRepository.findByDriverId(driverId);
-        boolean hasActiveBookings = activeBookings.stream()
-                .anyMatch(booking ->
-                        booking.getStatus() == BookingStatus.CONFIRMED ||
-                        booking.getStatus() == BookingStatus.IN_PROGRESS
-                );
-        if(hasActiveBookings){
-            throw new IllegalStateException("Cannot delete driver with active bookings");
-        }
-
-        if(driver.getCarId() != null){
-            carRepository.findById(driver.getCarId()).ifPresent(car -> {
-                car.setAssignedDriverId(null);
-                carRepository.save(car);
-            });
-        }
-        driverRepository.deleteById(driverId);
-        log.info("Successfully deleted driver with ID: {}", driverId);
-    }
-
-    @Override
-    @Transactional
     public Driver updateAvailability(String driverId, boolean availability) {
         log.info("Updating availability to {} for driver: {}", availability, driverId);
 
@@ -158,5 +125,33 @@ public class DriverServiceImpl implements DriverService{
         }
 
         return bookingRepository.findByDriverId(driverId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteDriver(String driverId) {
+        log.info("Attempting to delete driver with ID: {}", driverId);
+
+        Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(() -> new ResourceNotFoundException("Driver not found with id: " + driverId));
+
+        List<Booking> activeBookings = bookingRepository.findByDriverId(driverId);
+        boolean hasActiveBookings = activeBookings.stream()
+                .anyMatch(booking ->
+                        booking.getStatus() == BookingStatus.CONFIRMED ||
+                        booking.getStatus() == BookingStatus.IN_PROGRESS
+                );
+        if(hasActiveBookings){
+            throw new IllegalStateException("Cannot delete driver with active bookings");
+        }
+
+        if(driver.getCarId() != null){
+            carRepository.findById(driver.getCarId()).ifPresent(car -> {
+                car.setAssignedDriverId(null);
+                carRepository.save(car);
+            });
+        }
+        driverRepository.deleteById(driverId);
+        log.info("Successfully deleted driver with ID: {}", driverId);
     }
 }

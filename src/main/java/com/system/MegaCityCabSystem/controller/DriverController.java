@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.system.MegaCityCabSystem.model.Booking;
 import com.system.MegaCityCabSystem.model.Car;
 import com.system.MegaCityCabSystem.model.Driver;
+import com.system.MegaCityCabSystem.service.CloudinaryService;
 import com.system.MegaCityCabSystem.service.DriverService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,11 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/auth/driver")
 @Slf4j
+
 public class DriverController {
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     private DriverService driverService;
@@ -73,6 +78,7 @@ public class DriverController {
             driver.setPassword(password);
             driver.setHasOwnCar(hasOwnCar);
 
+            
            
             Car car = null;
             if(hasOwnCar){
@@ -96,10 +102,12 @@ public class DriverController {
                     car.setDriverRate(driverRate);
                 }
 
-                if(carImage != null && !carImage.isEmpty()){
-                    String carImgUrl = handleImageUpload(carImage, "car");
-                    car.setCarImgUrl(carImgUrl);
+                if (carImage != null && !carImage.isEmpty()) {
+                    String carImageUrl = cloudinaryService.uploadImage(carImage);
+                    car.setCarImgUrl(carImageUrl);
                 }
+
+                
             }
 
             return driverService.createDriver(driver, car);
@@ -154,22 +162,7 @@ public class DriverController {
         return ResponseEntity.noContent().build();
     }
 
-    private String handleImageUpload(MultipartFile file, String type) throws IOException {
-        String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-
-        String basePath = type.equals("driver") ? "drivers/" : "cars/";
-        String uploadDir = "uploads/" + basePath;
-
-        File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
-        Path filePath = Paths.get(uploadDir + filename);
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        return basePath + filename;
-    }
+    
   
 
 }
