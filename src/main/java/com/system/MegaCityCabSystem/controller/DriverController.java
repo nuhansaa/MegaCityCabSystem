@@ -76,9 +76,7 @@ public class DriverController {
             driver.setDriverVehicalLicense(driverVehicalLicense);
             driver.setDriverPhone(driverPhone);
             driver.setPassword(password);
-            driver.setHasOwnCar(hasOwnCar);
-
-            
+            driver.setHasOwnCar(hasOwnCar);         
            
             Car car = null;
             if(hasOwnCar){
@@ -106,8 +104,6 @@ public class DriverController {
                     String carImageUrl = cloudinaryService.uploadImage(carImage);
                     car.setCarImgUrl(carImageUrl);
                 }
-
-                
             }
 
             return driverService.createDriver(driver, car);
@@ -118,6 +114,8 @@ public class DriverController {
                     .body("Error creating driver: " + e.getMessage());
         }
     }
+
+
     @PutMapping("/{driverId}/availability")
     public ResponseEntity<Driver> updateAvailability(
             @AuthenticationPrincipal UserDetails userDetails,
