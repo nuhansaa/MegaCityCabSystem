@@ -13,8 +13,12 @@ public interface BookingService {
     List<Booking> getAllBookings();
     Booking getBookingById(String bookingId);
     Booking createBooking(BookingRequest request);
+    Booking confirmBooking(String bookingId);
+    List<Booking> getAvailableBookings();
     Booking cancelBooking(String customerId, CancellationRequest request);
+    boolean hasBookingWithDriver(String customerEmail, String driverId);
     List<Booking> getCustomerBookings(String customerId);
     Booking getBookingDetails(String customerId, String bookingId);
     void deleteBooking(String customerId, String bookingId);
+    
 }
