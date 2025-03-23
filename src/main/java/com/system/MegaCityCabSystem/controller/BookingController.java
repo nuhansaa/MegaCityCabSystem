@@ -7,18 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.system.MegaCityCabSystem.dto.BookingRequest;
 import com.system.MegaCityCabSystem.dto.CancellationRequest;
 import com.system.MegaCityCabSystem.exception.ResourceNotFoundException;
 import com.system.MegaCityCabSystem.model.Booking;
 import com.system.MegaCityCabSystem.model.Customer;
+import com.system.MegaCityCabSystem.model.Driver;
 import com.system.MegaCityCabSystem.repository.CustomerRepository;
 import com.system.MegaCityCabSystem.service.BookingService;
 
@@ -102,6 +97,8 @@ public class BookingController {
         Booking booking = bookingService.getBookingDetails(customer.getCustomerId(), bookingId);
         return ResponseEntity.ok(booking);
     }
+
+    
 
     @DeleteMapping("/delete/{bookingId}")
     public ResponseEntity<Void> deleteBooking(

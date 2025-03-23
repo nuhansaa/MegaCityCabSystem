@@ -3,7 +3,6 @@ package com.system.MegaCityCabSystem.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Booking {
+
     @Id
     private String bookingId;
 
@@ -36,20 +36,23 @@ public class Booking {
 
     private double totalAmount;
 
-    @Transient
-    private String passengerName; // Added for frontend compatibility (mapped from Customer)
+
+    private double distance; 
+    private double distanceFare; 
+    private double tax; 
+    private double driverFee; 
 
     @Transient
-    private String passengerImage; // Added for frontend compatibility (mapped from Customer)
+    private String passengerName;
 
-    @Transient
-    private Double passengerRating; // Added for frontend compatibility (mapped from Customer)
 
-    private double tax;
 
     private boolean completed = false;
 
     private boolean driverRequired = false;
+
+    // New field to store driver assignment status message
+    private String driverAssignmentMessage;
 
     private BookingStatus status = BookingStatus.PENDING;
 
@@ -72,3 +75,4 @@ public class Booking {
         return status == BookingStatus.PENDING || status == BookingStatus.CONFIRMED;
     }
 }
+
