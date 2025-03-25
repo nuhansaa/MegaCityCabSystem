@@ -56,20 +56,25 @@ public class DriverController {
     }
 
     @GetMapping("/getdriver/{driverId}")
-    public ResponseEntity<Driver> getDriverById(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String driverId) {
-        String email = userDetails.getUsername();
+    public Driver getDriverById(@PathVariable("driverId") String driverId) {
+        return driverService.getDriverById(driverId);
 
-        // Check if the user has a booking with this driver
-        boolean hasBooking = bookingService.hasBookingWithDriver(email, driverId);
-        if (!hasBooking) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        Driver driver = driverService.getDriverById(driverId);
-        return ResponseEntity.ok(driver);
     }
+    // @GetMapping("/getdriver/{driverId}")
+    // public ResponseEntity<Driver> getDriverById(
+    //         @AuthenticationPrincipal UserDetails userDetails,
+    //         @PathVariable String driverId) {
+    //     String email = userDetails.getUsername();
+
+    //     // Check if the user has a booking with this driver
+    //     boolean hasBooking = bookingService.hasBookingWithDriver(email, driverId);
+    //     if (!hasBooking) {
+    //         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    //     }
+
+    //     Driver driver = driverService.getDriverById(driverId);
+    //     return ResponseEntity.ok(driver);
+    // }
 
     @PostMapping(value = "/createdriver",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
@@ -150,29 +155,34 @@ public class DriverController {
         return ResponseEntity.ok(driver);
     }
 
-    @GetMapping("/{driverId}/bookings")
-    public ResponseEntity<List<Booking>> getDriverBookings(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String driverId) {
-        String email = userDetails.getUsername();
-        log.info("Fetching bookings for driver: {} for email: {}", driverId, email);
+    // @GetMapping("/{driverId}/bookings")
+    // public ResponseEntity<List<Booking>> getDriverBookings(
+    //         @AuthenticationPrincipal UserDetails userDetails,
+    //         @PathVariable String driverId) {
+    //     String email = userDetails.getUsername();
+    //     log.info("Fetching bookings for driver: {} for email: {}", driverId, email);
 
-        Driver driver = driverService.getDriverById(driverId);
-        if (!email.equals(driver.getEmail())) {
-            log.warn("Unauthorized access attempt by user: {}", email);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+    //     Driver driver = driverService.getDriverById(driverId);
+    //     if (!email.equals(driver.getEmail())) {
+    //         log.warn("Unauthorized access attempt by user: {}", email);
+    //         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    //     }
 
-        List<Booking> bookings = driverService.getDriverBookings(driverId).stream()
-                .map(booking -> {
-                    Customer customer = customerRepository.findById(booking.getCustomerId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-                    booking.setPassengerName(customer.getCustomerName());
+    //     List<Booking> bookings = driverService.getDriverBookings(driverId).stream()
+    //             .map(booking -> {
+    //                 Customer customer = customerRepository.findById(booking.getCustomerId())
+    //                         .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+    //                 booking.setPassengerName(customer.getCustomerName());
                     
-                    return booking;
-                })
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(bookings);
+    //                 return booking;
+    //             })
+    //             .collect(Collectors.toList());
+    //     return ResponseEntity.ok(bookings);
+    // }
+
+    @GetMapping("/{driverId}/bookings")
+    public List<Booking> getDriverBookings(@PathVariable String driverId) {
+        return driverService.getDriverBookings(driverId);
     }
 
     @DeleteMapping("/{driverId}")
