@@ -87,6 +87,7 @@ public class DriverController {
             @RequestParam("password") String password,
             @RequestParam("hasOwnCar") boolean hasOwnCar,
             @RequestParam(value = "carLicensePlate", required = false) String carLicensePlate,
+            @RequestParam(value = "carBrand", required = false) String carBrand,
             @RequestParam(value = "carModel", required = false) String carModel,
             @RequestParam(value = "capacity", required = false) Integer capacity,
             @RequestParam(value = "baseRate", required = false) Double baseRate,
@@ -108,6 +109,7 @@ public class DriverController {
             if (hasOwnCar) {
                 car = new Car();
                 car.setCarLicensePlate(carLicensePlate);
+                car.setCarBrand(carBrand);
                 car.setCarModel(carModel);
                 car.setCapacity(capacity != null ? capacity : 4);
                 car.setBaseRate(baseRate != null ? baseRate : 0.0);
