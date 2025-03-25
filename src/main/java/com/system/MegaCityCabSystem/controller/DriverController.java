@@ -59,6 +59,8 @@ public class DriverController {
     public Driver getDriverById(@PathVariable("driverId") String driverId) {
         return driverService.getDriverById(driverId);
 
+        
+
     }
     // @GetMapping("/getdriver/{driverId}")
     // public ResponseEntity<Driver> getDriverById(

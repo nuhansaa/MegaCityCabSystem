@@ -413,7 +413,7 @@ public class BookingServiceImpl implements BookingService {
 
             emailBody.append("If you have any questions, please contact our customer service team.\n");
             emailBody.append("Phone: +94 11 123 4567\n");
-            emailBody.append("Email: support@megacitycab.com\n\n");
+            emailBody.append("Email: info@megacitycab.com\n\n");
 
             emailBody.append("Thank you for choosing MegaCityCab!\n");
 
@@ -436,12 +436,12 @@ public class BookingServiceImpl implements BookingService {
                 .append(".header { text-align: center; padding: 10px 0; }")
                 .append(".header img { width: 150px; }")
                 .append(".details { margin: 20px 0; }")
-                .append(".details h2 { background-color: #007BFF; color: #ffffff; padding: 10px; border-radius: 5px; }")
+                .append(".details h2 { background-color: #424242; color: #ffffff; padding: 10px; border-radius: 5px; }")
                 .append(".details p { margin: 5px 0; }")
                 .append(".invoice { background-color: #f9f9f9; padding: 20px; border-radius: 10px; }")
                 .append(".invoice table { width: 100%; border-collapse: collapse; }")
                 .append(".invoice th, .invoice td { padding: 10px; border-bottom: 1px solid #dddddd; }")
-                .append(".invoice th { text-align: left; background-color: #007BFF; color: #ffffff; }")
+                .append(".invoice th { text-align: left; background-color: #424242; color: #ffffff; }")
                 .append(".total { text-align: right; font-weight: bold; }")
                 .append(".footer { text-align: center; margin-top: 20px; font-size: 12px; color: #888888; }")
                 .append("</style>")
@@ -450,7 +450,7 @@ public class BookingServiceImpl implements BookingService {
                 .append("<div class='container'>")
                 .append("<div class='content'>")
                 .append("<div class='header'>")
-                .append("<img src='https://www.megacitycab.com/logo.png' alt='MegaCityCab Logo' />")
+                // .append("<img src='https://www.megacitycab.com/logo.png' alt='MegaCityCab Logo' />")
                 .append("<h1>Booking Confirmation</h1>")
                 .append("</div>")
                 .append("<p>Dear ").append(customer.getCustomerName()).append(",</p>")
